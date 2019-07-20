@@ -23,3 +23,8 @@ var persona3 = {
 }
 
 var personas = [persona,persona1,persona2,persona3]
+
+for (var i = 0; i < personas.length; i++) {
+    var persona = personas[i]
+    console.log(`${persona.nombre} mide ${persona.altura}mts`)
+}
