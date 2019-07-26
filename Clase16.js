@@ -25,23 +25,18 @@ var persona3 = {
 const es_alta = ({ altura }) => altura > 1.8;
 const es_baja = ({ altura }) => altura < 1.8; // No cambia el array original
 
-/*const pasar_altura_a_cms = persona => {
-	return {
-		...persona,
-		altura: (persona.altura *= 100)
-	};
-};*/
+const pasar_altura_a_cms = persona => ({
+	...persona,
+	altura: persona.altura * 100
+});
 
-const pasar_altura_a_cms = persona => {
-	persona.altura *= 100;
-	return persona;
-}; // Cambia el array original
+// const pasar_altura_a_cms = persona => {
+// persona.altura *= 100;
+// return persona;
+// }; // Cambia el array original
 
 var personas = [persona, persona1, persona2, persona3];
-
-var personas_altas = personas.filter(es_alta);
-var personas_bajas = personas.filter(es_baja);
-
 var personas_cms = personas.map(pasar_altura_a_cms);
 
+console.log(personas);
 console.log(personas_cms);
