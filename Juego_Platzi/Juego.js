@@ -7,6 +7,7 @@ class Juego {
 	constructor() {
 		this.inicializar();
 		this.generar_secuencia();
+		this.siguiente_nivel();
 	}
 	inicializar() {
 		btnEmpezar.classList.add("hide");
@@ -24,8 +25,41 @@ class Juego {
 			.fill(0)
 			.map(n => Math.floor(Math.random() * 4));
 	}
+
+	siguiente_nivel() {
+		this.iluminar_secuencia();
+	}
+
+	transformar_numero_a_color(numero) {
+		switch (numero) {
+			case 0:
+				return "celeste";
+			case 1:
+				return "violeta";
+			case 2:
+				return "naranja";
+			case 3:
+				return "verde";
+		}
+	}
+
+	iluminar_secuencia() {
+		for (let i = 0; i < this.nivel; i++) {
+            let color = this.transformar_numero_a_color(this.secuencia[i]);
+			setTimeout(() => this.iluminar_color(color), 1000 * i);
+		}
+	}
+
+	iluminar_color(color) {
+		this.colores[color].classList.add("light");
+		setTimeout(() => this.apagar_color(color), 500);
+	}
+
+	apagar_color(color) {
+		this.colores[color].classList.remove("light");
+	}
 }
 
 function empezarJuego() {
-	window.juego = new Juego();
+	var juego = new Juego();
 }
