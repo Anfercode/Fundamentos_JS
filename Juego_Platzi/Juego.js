@@ -3,15 +3,17 @@ const violeta = document.getElementById("violeta");
 const naranja = document.getElementById("naranja");
 const verde = document.getElementById("verde");
 const btnEmpezar = document.getElementById("btnEmpezar");
+const ULTIMO_NIVEL = 10;
 class Juego {
 	constructor() {
 		this.inicializar();
 		this.generar_secuencia();
-		this.siguiente_nivel();
+		setTimeout(this.siguiente_nivel, 500);
 	}
 	inicializar() {
 		btnEmpezar.classList.add("hide");
-		this.elegir_color= this.elegir_color.bind(this)
+		this.elegir_color = this.elegir_color.bind(this);
+		this.siguiente_nivel = this.siguiente_nivel.bind(this);
 		this.nivel = 1;
 		this.colores = {
 			celeste,
@@ -22,14 +24,15 @@ class Juego {
 	}
 
 	generar_secuencia() {
-		this.secuencia = new Array(10)
+		this.secuencia = new Array(ULTIMO_NIVEL)
 			.fill(0)
 			.map(n => Math.floor(Math.random() * 4));
 	}
 
 	siguiente_nivel() {
+		this.subnivel = 0;
 		this.iluminar_secuencia();
-		this.agregar_evento_click()
+		this.agregar_evento_click();
 	}
 
 	transformar_numero_a_color(numero) {
@@ -42,6 +45,19 @@ class Juego {
 				return "naranja";
 			case 3:
 				return "verde";
+		}
+	}
+
+	transformar_color_a_numero(color) {
+		switch (color) {
+			case "celeste":
+				return 0;
+			case "violeta":
+				return 1;
+			case "naranja":
+				return 2;
+			case "verde":
+				return 3;
 		}
 	}
 
@@ -68,8 +84,31 @@ class Juego {
 		this.colores.naranja.addEventListener("click", this.elegir_color);
 	}
 
-	elegir_color(ev){
-		console.log(this);
+	eliminar_eventos_click() {
+		this.colores.celeste.removeEventListener("click", this.elegir_color);
+		this.colores.verde.removeEventListener("click", this.elegir_color);
+		this.colores.violeta.removeEventListener("click", this.elegir_color);
+		this.colores.naranja.removeEventListener("click", this.elegir_color);
+	}
+
+	elegir_color(ev) {
+		const nombre_color = ev.target.dataset.color;
+		const numero_color = this.transformar_color_a_numero(nombre_color);
+		this.iluminar_color(nombre_color);
+		if (numero_color === this.secuencia[this.subnivel]) {
+			this.subnivel++;
+			if (this.subnivel === this.nivel) {
+				this.nivel++;
+				this.eliminar_eventos_click();
+				if (this.nivel === ULTIMO_NIVEL + 1) {
+					//Gano
+				} else {
+					setTimeout(this.siguiente_nivel, 1500);
+				}
+			}
+		} else {
+			//perdio
+		}
 	}
 }
 
